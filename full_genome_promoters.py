@@ -73,8 +73,8 @@ def find_35_10_promoters(gb_path, outpath):
     ref_sequence = ref_record.seq
     print('reference length: ', len(ref_sequence))
     # Where to search for -35 promoters relative to -10 promoters
-    min_len_gap = 15
-    max_len_gap = 20
+    min_len_gap = 17
+    max_len_gap = 21
 
     with open(outpath, 'w') as outfile:
         writer = csv.writer(outfile, delimiter = ',')
