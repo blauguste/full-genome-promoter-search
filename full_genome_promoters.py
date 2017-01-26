@@ -6,6 +6,8 @@ from Bio.SeqUtils import nt_search
 import csv
 import sys
 
+# note that promoter positions resulting from this program are positions in pythonic indexing
+
 def search_for_promoters(promoter_list, promoter_type, window_start, window_end, ref_seq, strand):
     unique_search_results = set()
     if strand == 'F':
@@ -25,7 +27,8 @@ def search_for_promoters(promoter_list, promoter_type, window_start, window_end,
                     elif promoter_type == -35:
                         promoter_seq = str(ref_seq[promoter_pos:(promoter_pos + 6)])
                 elif strand == 'R':
-                    promoter_pos = window_end - pos
+# Need to subtract one because window end is not the last position of the promoter, but rather the position after that (end is not inclusive)
+                    promoter_pos = window_end - 1 - pos
                     if promoter_type == -10:
                         promoter_seq = str(ref_seq[(promoter_pos - 6):(promoter_pos + 3)].reverse_complement())
                     elif promoter_type == -35:
@@ -77,7 +80,7 @@ def find_35_10_promoters(gb_path, outpath):
     max_len_gap = 21
 
     with open(outpath, 'w') as outfile:
-        writer = csv.writer(outfile, delimiter = ',')
+        writer = csv.writer(outfile, delimiter = '\t')
         # Find and record promoters on the forward strand:
         forward_results = record_thirtyfive_ten_promoters(ref_sequence, 'F', min_len_gap, max_len_gap)
         if len(forward_results) > 0:
